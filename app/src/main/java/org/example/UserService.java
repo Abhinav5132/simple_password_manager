@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.NoSuchElementException;
+
 public class UserService {
     private final UserRepo repo;
     private final EncryptionService service;
@@ -36,6 +38,9 @@ public class UserService {
             throw new IllegalArgumentException("Password cannot be empty");
         }
         User existing = repo.findByUsername(username);
+        if (existing == null) {
+            throw new NoSuchElementException("User does not exist");
+        }
         String hashedPwd = service.Hash(password);
 
         if (existing.getPassword() != hashedPwd) {
