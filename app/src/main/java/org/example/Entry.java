@@ -10,7 +10,7 @@ public class Entry {
     }
 
     public String getName() {
-        return null;
+        return this.name;
     }
 
     public String getUsername() {

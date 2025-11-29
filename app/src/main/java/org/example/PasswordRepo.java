@@ -11,6 +11,9 @@ public class PasswordRepo {
     }
 
     public void addEntry(Entry entry) {
+        if(entries.contains(entry)){
+            throw new IllegalArgumentException("Entry for" + entry.getName() + "already exists");
+        }
         this.entries.add(entry);
     }
 
