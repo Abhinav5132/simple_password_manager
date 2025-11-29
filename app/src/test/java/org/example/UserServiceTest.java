@@ -3,6 +3,7 @@ package org.example;
 import org.junit.Test;
 import org.example.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -93,4 +94,18 @@ public class UserServiceTest {
         verify(repo, never()).saveUser(any());
     }
 
+    @Test 
+    public void passwordShouldBeHashed() {
+        UserRepo repo = mock(UserRepo.class);
+        EncryptionService encryptionService = mock(EncryptionService.class);
+        UserService service = new UserService(repo, encryptionService);
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+
+        when(encryptionService.Hash("pass123")).thenReturn("Hashed_password");
+
+        User user = service.createUser("alice", "pass123", pwdRepo);
+
+        assertEquals(user.getPassword(), "Hashed_password");
+        assertNotEquals(user.getPassword(), "pass123");
+    }   
 }
