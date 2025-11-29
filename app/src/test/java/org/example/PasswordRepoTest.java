@@ -28,4 +28,16 @@ public class PasswordRepoTest {
         assertEquals(1, repo.count());
 
     }
+
+    @Test
+    public void addEntryShouldThrowWhenNull() {
+        PasswordRepo repo = new PasswordRepo();
+        Entry entry = null;
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.addEntry(entry);
+        });
+        assertEquals(0, repo.count());
+
+    }
 }
