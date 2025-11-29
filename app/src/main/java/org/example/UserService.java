@@ -10,7 +10,7 @@ public class UserService {
     public User createUser(String Username, String Password, PasswordRepo pwdRepo){
         User existing = repo.findByUsername(Username);
         if (existing != null) {
-            return null;
+            throw new IllegalArgumentException("Username Taken");
         }
 
         User user = new User(Username, Password, pwdRepo);
