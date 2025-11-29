@@ -10,6 +10,10 @@ public class UserRepo {
         if(user == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
+
+        if (users.contains(user)){
+            throw new IllegalArgumentException("User already exists");
+        }
         users.add(user);
     }
     public User findByUsername(String Username) {
