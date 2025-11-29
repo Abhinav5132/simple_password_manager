@@ -40,4 +40,36 @@ public class UserServiceTest {
 
         verify(repo, never()).saveUser(any()); // verify that the user never gets saved.
     }
+
+    @Test
+    public void passwordNullShouldThrowAnException(){
+        UserRepo repo = mock(UserRepo.class);
+        UserService service = new UserService(repo);
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+
+        when(repo.findByUsername("Bob")).thenReturn(null);
+        
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            service.createUser("alice", null, pwdRepo);
+        });
+        
+        verify(repo, never()).saveUser(any());
+    }
+
+    @Test
+    public void passwordEmptyShouldThrowAnException(){
+        UserRepo repo = mock(UserRepo.class);
+        UserService service = new UserService(repo);
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+
+        when(repo.findByUsername("Bob")).thenReturn(null);
+        
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            service.createUser("alice", "", pwdRepo);
+        });
+        
+        verify(repo, never()).saveUser(any());
+    }
 }
