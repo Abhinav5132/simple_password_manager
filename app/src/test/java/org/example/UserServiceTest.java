@@ -72,4 +72,17 @@ public class UserServiceTest {
         
         verify(repo, never()).saveUser(any());
     }
+
+    @Test 
+    public void usernameEmptyShouldThrowAnException() {
+        UserRepo repo = mock(UserRepo.class);
+        UserService service = new UserService(repo);
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+        
+        assertThrows(IllegalArgumentException.class, () ->
+            service.createUser("", "pass123", pwdRepo)
+        );
+        
+        verify(repo, never()).saveUser(any());
+    }
 }
