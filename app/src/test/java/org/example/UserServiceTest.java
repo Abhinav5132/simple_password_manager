@@ -50,7 +50,7 @@ public class UserServiceTest {
         when(repo.findByUsername("Bob")).thenReturn(null);
         
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             service.createUser("alice", null, pwdRepo);
         });
         
