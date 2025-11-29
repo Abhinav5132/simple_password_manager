@@ -40,4 +40,15 @@ public class UserRepoTest {
             repo.saveUser(user);
         });
     }
+
+    @Test
+    public void findByUsername_ShouldReturnUser_WhenExists() {
+        UserRepo repo = new UserRepo();
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+        User user = new User("alice", "pass1234", pwdRepo);
+        repo.saveUser(user);
+
+        User found_user = repo.findByUsername("alice");
+        assertEquals(user, found_user);
+    }
 }
