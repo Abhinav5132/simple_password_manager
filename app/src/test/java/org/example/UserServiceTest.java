@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Test;
 import org.example.*;
 import static org.junit.Assert.assertEquals;
@@ -157,5 +159,23 @@ public class UserServiceTest {
         assertThrows(IllegalArgumentException.class, () ->
             service.Login("", "pass123")
         );
+    }
+
+    @Test 
+    public void loginShouldThowAnException_WhenUserDoesNotExist() {
+        UserRepo repo = mock(UserRepo.class);
+        EncryptionService encryptionService = mock(EncryptionService.class);
+        UserService service = new UserService(repo, encryptionService);
+        PasswordRepo pwdRepo = mock(PasswordRepo.class);
+
+        User expected_user = new User("alice", "Hashed_password", pwdRepo);
+
+        when(encryptionService.Hash("pass123")).thenReturn("Hashed_password");
+        when(repo.findByUsername("alice")).thenReturn(null);
+
+        assertThrows(NoSuchElementException.class, ()->{
+            service.Login("alice", "pass123");
+        });
+
     }
 }
