@@ -2,9 +2,11 @@ package org.example;
 
 public class UserService {
     private final UserRepo repo;
+    private final EncryptionService service;
 
-    public UserService(UserRepo repo) {
+    public UserService(UserRepo repo, EncryptionService service) {
         this.repo = repo;
+        this.service =service;
     }
 
     public User createUser(String Username, String Password, PasswordRepo pwdRepo){

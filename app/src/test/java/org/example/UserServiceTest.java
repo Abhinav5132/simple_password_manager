@@ -13,7 +13,8 @@ public class UserServiceTest {
     @Test
     public void createUser_ShouldSaveNewUser_WhenUsernameNotTaken() {
         UserRepo repo = mock(UserRepo.class);
-        UserService service = new UserService(repo);
+        EncryptionService encryptionService = mock(EncryptionService.class);
+        UserService service = new UserService(repo, encryptionService);
         PasswordRepo pwdRepo = mock(PasswordRepo.class);
 
         when(repo.findByUsername("Bob")).thenReturn(null);
@@ -29,7 +30,8 @@ public class UserServiceTest {
     @Test
     public void createUser_ShouldThrowException_WhenUsernameTaken(){
         UserRepo repo = mock(UserRepo.class);
-        UserService service = new UserService(repo);
+        EncryptionService encryptionService = mock(EncryptionService.class);
+        UserService service = new UserService(repo, encryptionService);
         PasswordRepo pwdRepo = mock(PasswordRepo.class);
 
         when(repo.findByUsername("alice")).thenReturn(new User("alice", "whatever", pwdRepo));
@@ -44,8 +46,11 @@ public class UserServiceTest {
     @Test
     public void passwordNullShouldThrowAnException(){
         UserRepo repo = mock(UserRepo.class);
-        UserService service = new UserService(repo);
+        EncryptionService encryptionService = mock(EncryptionService.class);
+
+        UserService service = new UserService(repo, encryptionService);
         PasswordRepo pwdRepo = mock(PasswordRepo.class);
+
 
         when(repo.findByUsername("Bob")).thenReturn(null);
         
@@ -60,7 +65,8 @@ public class UserServiceTest {
     @Test
     public void passwordEmptyShouldThrowAnException(){
         UserRepo repo = mock(UserRepo.class);
-        UserService service = new UserService(repo);
+        EncryptionService encryptionService = mock(EncryptionService.class);
+        UserService service = new UserService(repo, encryptionService);
         PasswordRepo pwdRepo = mock(PasswordRepo.class);
 
         when(repo.findByUsername("Bob")).thenReturn(null);
@@ -76,7 +82,8 @@ public class UserServiceTest {
     @Test 
     public void usernameEmptyShouldThrowAnException() {
         UserRepo repo = mock(UserRepo.class);
-        UserService service = new UserService(repo);
+        EncryptionService encryptionService = mock(EncryptionService.class);
+        UserService service = new UserService(repo, encryptionService);
         PasswordRepo pwdRepo = mock(PasswordRepo.class);
         
         assertThrows(IllegalArgumentException.class, () ->
@@ -85,4 +92,5 @@ public class UserServiceTest {
         
         verify(repo, never()).saveUser(any());
     }
+
 }
