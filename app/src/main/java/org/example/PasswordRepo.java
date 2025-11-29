@@ -11,7 +11,7 @@ public class PasswordRepo {
     }
 
     public void addEntry(Entry entry) {
-
+        this.entries.add(entry);
     }
 
     public void removeEntry(Entry entry) {
@@ -20,6 +20,10 @@ public class PasswordRepo {
     
     public void editEntry(Entry entry) {
 
+    }
+
+    public int count(){
+        return entries.size();
     }
     
 }
