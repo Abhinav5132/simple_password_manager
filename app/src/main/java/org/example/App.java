@@ -3,12 +3,83 @@
  */
 package org.example;
 
+import java.util.Scanner;
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
+    public static void main(String[] args) {
+        UserRepo repo = new UserRepo();
+        EncryptionService encrypt = new EncryptionService();
+        UserService service = new UserService(repo, encrypt);
+        Scanner scanner = new Scanner(System.in);
+
+         while (true) {
+            System.out.println("===== PASSWORD MANAGER =====");
+            System.out.println("1. Create User");
+            System.out.println("2. Login");
+            System.out.println("3. Exit");
+            System.out.print("Enter choice: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    createUserUI(scanner, service);
+                    break;
+
+                case "2":
+                    loginUI(scanner, service);
+                    break;
+
+                case "3":
+                    System.out.println("Goodbye!");
+                    return;
+
+                default:
+                    System.out.println("Invalid option! Try again.");
+            }
+
+            System.out.println();
+        }
     }
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+    private static void createUserUI(Scanner scanner, UserService service) {
+        System.out.println("---- Create New User ----");
+
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        try {
+            PasswordRepo repo = new PasswordRepo();
+            User user = service.createUser(username, password, repo);
+            System.out.println("User created: " + user.getUsername());
+        } catch (IllegalArgumentException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+
+    private static void loginUI(Scanner scanner, UserService service) {
+        System.out.println("---- Login ----");
+
+        System.out.print("Username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Password: ");
+        String password = scanner.nextLine();
+
+        try {
+            User user = service.Login(username, password);
+            if (user != null) {
+                System.out.println("Login successful!");
+            } else {
+                System.out.println("Invalid username or password.");
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
     }
 }
+
