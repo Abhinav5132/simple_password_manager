@@ -22,6 +22,7 @@ public class PasswordRepo {
     }
 
     public void removeEntry(Entry entry) {
+        this.entries.remove(entry);
     }
     
     public void editEntry(Entry entry) {
