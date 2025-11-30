@@ -40,4 +40,17 @@ public class PasswordRepoTest {
         assertEquals(0, repo.count());
 
     }
+
+    @Test
+    public void removeEntryShouldRemoveEntryFromRepo() {
+        PasswordRepo repo = new PasswordRepo();
+        Entry entry = new Entry("Google.com", "alicia", "pass1234");
+        repo.addEntry(entry);
+        assertEquals(1, repo.count());
+
+        repo.removeEntry(entry);
+        assertEquals(0, repo.count());
+    }
+
+
 }

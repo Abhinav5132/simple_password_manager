@@ -22,7 +22,6 @@ public class PasswordRepo {
     }
 
     public void removeEntry(Entry entry) {
-
     }
     
     public void editEntry(Entry entry) {
