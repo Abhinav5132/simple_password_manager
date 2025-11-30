@@ -81,4 +81,25 @@ public class PasswordRepoTest {
 
         assertEquals(1, repo.count());
     }
+
+    @Test 
+    public void createEntryShouldThrowIfAnyFeildIsNull(){
+        PasswordRepo repo = new PasswordRepo();
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.createEntry(null, "alicia", "pass1234");
+        });
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.createEntry("Google.com", null, "pass1234");
+        });
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.createEntry("Google.com", "alicia", null);
+        });
+        
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.createEntry(null, null, null);
+        });
+    }
 }
