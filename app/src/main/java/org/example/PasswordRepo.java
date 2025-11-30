@@ -27,7 +27,10 @@ public class PasswordRepo {
             throw new IllegalArgumentException("Entry cannot be null");
         }
 
-        
+        if(!this.entries.contains(entry)) {
+            throw new IllegalArgumentException("Repo does not contain entry");
+            
+        }
         this.entries.remove(entry);
     }
     
