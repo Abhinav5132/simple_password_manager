@@ -102,4 +102,28 @@ public class PasswordRepoTest {
             repo.createEntry(null, null, null);
         });
     }
+
+    @Test 
+    public void createEntryShouldThrowIfNameOrPasswordIsEmpty(){
+        PasswordRepo repo = new PasswordRepo();
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.createEntry("", "alicia", "pass1234");
+        });
+
+        // username can be empty and and test fails if exception thrown for this
+        repo.createEntry("Google.com", "", "pass1234");
+        
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.createEntry("Google.com", "alicia", "");
+        });
+        
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.createEntry("", "", "");
+        });
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.createEntry(" ", " ", " ");
+        });
+    }
 }

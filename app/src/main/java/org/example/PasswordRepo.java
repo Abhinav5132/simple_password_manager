@@ -49,7 +49,6 @@ public class PasswordRepo {
         if(password == null) {
             throw new IllegalArgumentException("Password cannot be null");
         }
-
         this.addEntry(entry);
     }
 
