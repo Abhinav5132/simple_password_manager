@@ -39,7 +39,9 @@ public class PasswordRepo {
     }
 
     public void createEntry(String name ,String username, String password) {
-        
+        Entry entry = new Entry(name, username, password);
+
+        this.addEntry(entry);
     }
 
     public int count(){
