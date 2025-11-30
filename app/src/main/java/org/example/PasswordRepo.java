@@ -40,6 +40,15 @@ public class PasswordRepo {
 
     public void createEntry(String name ,String username, String password) {
         Entry entry = new Entry(name, username, password);
+        if (name == null){
+            throw new IllegalArgumentException("Entry name cannot be null");
+        }
+        if(username == null ) {
+            throw new IllegalArgumentException("Username cannot be null");
+        }
+        if(password == null) {
+            throw new IllegalArgumentException("Password cannot be null");
+        }
 
         this.addEntry(entry);
     }
