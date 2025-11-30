@@ -52,5 +52,15 @@ public class PasswordRepoTest {
         assertEquals(0, repo.count());
     }
 
+    @Test
+    public void removeEntryShouldThrowWhenNull() {
+        PasswordRepo repo = new PasswordRepo();
+        Entry entry = null; 
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.removeEntry(entry);
+        });
+        
+    }
 
 }
