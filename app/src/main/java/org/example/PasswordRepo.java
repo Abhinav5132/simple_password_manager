@@ -39,7 +39,6 @@ public class PasswordRepo {
     }
 
     public void createEntry(String name ,String username, String password) {
-        Entry entry = new Entry(name, username, password);
         if (name == null){
             throw new IllegalArgumentException("Entry name cannot be null");
         }
@@ -49,6 +48,22 @@ public class PasswordRepo {
         if(password == null) {
             throw new IllegalArgumentException("Password cannot be null");
         }
+
+        if (username.equals(" ")) {
+            username = "";
+        }
+
+        if(
+            name.equals("") || 
+            password.equals("") || 
+            password.equals(" ") || 
+            name.equals(" ")) 
+        {
+            throw new IllegalArgumentException("Name and password fields cannot be empty");
+        }
+
+        Entry entry = new Entry(name.trim(), username.trim(), password.trim());
+
         this.addEntry(entry);
     }
 
