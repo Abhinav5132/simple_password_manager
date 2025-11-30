@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThrows;
 import org.junit.Test;
 
 public class PasswordRepoTest {
+
     @Test
     public void addEntryShouldAddEntryToRepo() {
         PasswordRepo repo = new PasswordRepo();
@@ -73,4 +74,11 @@ public class PasswordRepoTest {
         });
     }
 
+    @Test
+    public void createEntryShouldCreateAnEntryAndAddToRepo() {
+        PasswordRepo repo = new PasswordRepo();
+        repo.createEntry("Google.com", "alicia", "pass1234");
+
+        assertEquals(1, repo.count());
+    }
 }

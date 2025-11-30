@@ -38,6 +38,10 @@ public class PasswordRepo {
 
     }
 
+    public void createEntry(String name ,String username, String password) {
+        
+    }
+
     public int count(){
         return entries.size();
     }
