@@ -26,6 +26,7 @@ public class PasswordRepo {
         if(entry == null) {
             throw new IllegalArgumentException("Entry cannot be null");
         }
+
         
         this.entries.remove(entry);
     }

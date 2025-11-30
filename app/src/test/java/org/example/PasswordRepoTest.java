@@ -63,4 +63,14 @@ public class PasswordRepoTest {
         
     }
 
+    @Test
+    public void removeEntryShouldThrowIfNotExists() {
+        PasswordRepo repo = new PasswordRepo();
+        Entry entry = new Entry("Google.com", "alicia", "pass1234");
+        
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.removeEntry(entry);
+        });
+    }
+
 }
