@@ -18,7 +18,7 @@ public class PasswordRepo {
                 return entry;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No entry with Site name:" + name);
     }
 
     public void addEntry(Entry entry) {
