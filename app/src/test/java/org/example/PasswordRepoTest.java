@@ -130,7 +130,7 @@ public class PasswordRepoTest {
         PasswordRepo repo = new PasswordRepo(service);
 
         when(service.Encrypt("pass1234")).thenReturn("encrypted_pass");
-        
+
         assertThrows(IllegalArgumentException.class, ()-> {
             repo.createEntry("", "alicia", "pass1234");
         });
@@ -170,5 +170,15 @@ public class PasswordRepoTest {
         verify(service).Encrypt("pass1234");
         verify(service).Decrypt("encrypted_pass");
 
+    }
+
+    @Test
+    public void getEntryByNameShouldThrowIfNotExists(){
+        EncryptionService service = mock(EncryptionService.class);
+        PasswordRepo repo = new PasswordRepo(service);
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.getEntryByName("Google.com");
+        });
     }
 }
