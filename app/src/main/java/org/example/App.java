@@ -23,7 +23,7 @@ public class App {
 
             switch (choice) {
                 case "1":
-                    createUserUI(scanner, service);
+                    createUserUI(scanner, service, encrypt);
                     break;
 
                 case "2":
@@ -42,7 +42,7 @@ public class App {
         }
     }
 
-    private static void createUserUI(Scanner scanner, UserService service) {
+    private static void createUserUI(Scanner scanner, UserService service, EncryptionService encryptionService) {
         System.out.println("---- Create New User ----");
 
         System.out.print("Enter username: ");
@@ -52,7 +52,7 @@ public class App {
         String password = scanner.nextLine();
 
         try {
-            PasswordRepo repo = new PasswordRepo();
+            PasswordRepo repo = new PasswordRepo(encryptionService);
             User user = service.createUser(username, password, repo);
             System.out.println("User created: " + user.getUsername());
         } catch (IllegalArgumentException ex) {

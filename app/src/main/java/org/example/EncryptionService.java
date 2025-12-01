@@ -1,11 +1,11 @@
 package org.example;
 
 public class EncryptionService {
-    public String encrypt(Entry entry) {
+    public String Encrypt(String password) {
         return null;
     }
 
-    public String Decrypt(Entry entry) {
+    public String Decrypt(String password) {
         return null;
     }
 

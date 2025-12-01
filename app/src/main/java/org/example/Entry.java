@@ -6,7 +6,9 @@ public class Entry {
     private String password;
 
     public Entry(String name, String username, String password) {
-
+        this.name = name;
+        this.username = username;
+        this.password = password;
     }
 
     public String getName() {
@@ -17,8 +19,8 @@ public class Entry {
         return null;
     }
 
-    public String getPassword() {
-        return null;
+    public String getPassword(EncryptionService service) {
+        return service.Decrypt(this.password);
     }
 
     public String setName(){

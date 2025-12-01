@@ -5,8 +5,23 @@ import java.util.List;
 
 public class PasswordRepo {
     private final List<Entry> entries = new ArrayList<>();
+    private final EncryptionService service;
 
-    public Entry getEntryByName() {
+    public PasswordRepo(EncryptionService service){
+        this.service = service;
+    }
+
+    public PasswordRepo() {
+        this.service = null;
+    }
+
+    public Entry getEntryByName(String name) {
+
+        for (Entry entry: entries) {
+            if(entry.getName().equals(name)){
+                return entry;
+            }
+        }
         return null;
     }
 
@@ -61,7 +76,7 @@ public class PasswordRepo {
         {
             throw new IllegalArgumentException("Name and password fields cannot be empty");
         }
-
+        password = service.Encrypt(password);
         Entry entry = new Entry(name.trim(), username.trim(), password.trim());
 
         this.addEntry(entry);
