@@ -12,7 +12,15 @@ public class PasswordRepo {
     }
 
     public Entry getEntryByName(String name) {
+        if(name == null) {
+            throw new IllegalArgumentException("Site name cannot be null");
+        }
 
+        if(name.equals("") || name.equals(" ")){
+            throw new IllegalArgumentException("Site name cannot be empty");
+        }
+
+        name = name.trim();
         for (Entry entry: entries) {
             if(entry.getName().equals(name)){
                 return entry;
