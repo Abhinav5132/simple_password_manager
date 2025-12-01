@@ -181,4 +181,27 @@ public class PasswordRepoTest {
             repo.getEntryByName("Google.com");
         });
     }
+
+    @Test
+    public void getEntryByNameShouldThrowIfNameIsNullOrEmpty(){
+        EncryptionService service = mock(EncryptionService.class);
+        PasswordRepo repo = new PasswordRepo(service);
+        
+        when(service.Encrypt("pass1234")).thenReturn("encrypted_pass");
+        repo.createEntry("Google.com","alicia", "pass1234");
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.getEntryByName(null);
+        });
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.getEntryByName("");
+        });
+
+        assertThrows(IllegalArgumentException.class, ()-> {
+            repo.getEntryByName(" ");
+        });
+
+        Entry entry = repo.getEntryByName("Google.com "); // trailing white space should not throw
+    }
 }
