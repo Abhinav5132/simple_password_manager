@@ -11,10 +11,6 @@ public class PasswordRepo {
         this.service = service;
     }
 
-    public PasswordRepo() {
-        this.service = null;
-    }
-
     public Entry getEntryByName(String name) {
 
         for (Entry entry: entries) {

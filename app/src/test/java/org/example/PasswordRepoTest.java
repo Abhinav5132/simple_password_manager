@@ -13,7 +13,9 @@ public class PasswordRepoTest {
 
     @Test
     public void addEntryShouldAddEntryToRepo() {
-        PasswordRepo repo = new PasswordRepo();
+        EncryptionService service = mock(EncryptionService.class);
+
+        PasswordRepo repo = new PasswordRepo(service);
         Entry entry = new Entry("Google.com", "alicia", "pass1234");
 
         repo.addEntry(entry);
@@ -22,7 +24,9 @@ public class PasswordRepoTest {
 
     @Test
     public void addEntryShouldThrowWhenDuplicate() {
-        PasswordRepo repo = new PasswordRepo();
+        EncryptionService service = mock(EncryptionService.class);
+
+        PasswordRepo repo = new PasswordRepo(service);
         Entry entry = new Entry("Google.com", "alicia", "pass1234");
 
         repo.addEntry(entry);
@@ -36,7 +40,9 @@ public class PasswordRepoTest {
 
     @Test
     public void addEntryShouldThrowWhenNull() {
-        PasswordRepo repo = new PasswordRepo();
+        EncryptionService service = mock(EncryptionService.class);
+
+        PasswordRepo repo = new PasswordRepo(service);
         Entry entry = null;
 
         assertThrows(IllegalArgumentException.class, ()-> {
@@ -48,7 +54,8 @@ public class PasswordRepoTest {
 
     @Test
     public void removeEntryShouldRemoveEntryFromRepo() {
-        PasswordRepo repo = new PasswordRepo();
+        EncryptionService service = mock(EncryptionService.class);
+        PasswordRepo repo = new PasswordRepo(service);
         Entry entry = new Entry("Google.com", "alicia", "pass1234");
         repo.addEntry(entry);
         assertEquals(1, repo.count());
@@ -59,7 +66,8 @@ public class PasswordRepoTest {
 
     @Test
     public void removeEntryShouldThrowWhenNull() {
-        PasswordRepo repo = new PasswordRepo();
+        EncryptionService service = mock(EncryptionService.class);
+        PasswordRepo repo = new PasswordRepo(service);
         Entry entry = null; 
 
         assertThrows(IllegalArgumentException.class, ()-> {
@@ -70,7 +78,8 @@ public class PasswordRepoTest {
 
     @Test
     public void removeEntryShouldThrowIfNotExists() {
-        PasswordRepo repo = new PasswordRepo();
+        EncryptionService service = mock(EncryptionService.class);
+        PasswordRepo repo = new PasswordRepo(service);
         Entry entry = new Entry("Google.com", "alicia", "pass1234");
         
         assertThrows(IllegalArgumentException.class, ()-> {
@@ -80,7 +89,11 @@ public class PasswordRepoTest {
 
     @Test
     public void createEntryShouldCreateAnEntryAndAddToRepo() {
-        PasswordRepo repo = new PasswordRepo();
+        EncryptionService service = mock(EncryptionService.class);
+        PasswordRepo repo = new PasswordRepo(service);
+
+        when(service.Encrypt("pass1234")).thenReturn("encrypted_pass");
+
         repo.createEntry("Google.com", "alicia", "pass1234");
 
         assertEquals(1, repo.count());
@@ -88,7 +101,11 @@ public class PasswordRepoTest {
 
     @Test 
     public void createEntryShouldThrowIfAnyFeildIsNull(){
-        PasswordRepo repo = new PasswordRepo();
+        EncryptionService service = mock(EncryptionService.class);
+        PasswordRepo repo = new PasswordRepo(service);
+
+        when(service.Encrypt("pass1234")).thenReturn("encrypted_pass");
+
 
         assertThrows(IllegalArgumentException.class, ()-> {
             repo.createEntry(null, "alicia", "pass1234");
@@ -109,8 +126,11 @@ public class PasswordRepoTest {
 
     @Test 
     public void createEntryShouldThrowIfNameOrPasswordIsEmpty(){
-        PasswordRepo repo = new PasswordRepo();
+        EncryptionService service = mock(EncryptionService.class);
+        PasswordRepo repo = new PasswordRepo(service);
 
+        when(service.Encrypt("pass1234")).thenReturn("encrypted_pass");
+        
         assertThrows(IllegalArgumentException.class, ()-> {
             repo.createEntry("", "alicia", "pass1234");
         });
