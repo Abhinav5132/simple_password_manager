@@ -1,7 +1,11 @@
 package org.example;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 
@@ -125,5 +129,26 @@ public class PasswordRepoTest {
         assertThrows(IllegalArgumentException.class, ()-> {
             repo.createEntry(" ", " ", " ");
         });
+    }
+
+    @Test
+    public void createEntryShouldEncryptPasswordBeforeBeingStoredInRepo() {
+        EncryptionService service = mock(EncryptionService.class);
+        PasswordRepo repo = new PasswordRepo(service);
+
+        when(service.Encrypt("pass1234")).thenReturn("encrypted_pass");
+
+        repo.createEntry("Google.com","alicia", "pass1234");
+
+        Entry stored = repo.getEntryByName("Google.com");
+
+        when(service.Decrypt("encrypted_pass")).thenReturn("pass1234");
+
+        assertNotNull(stored);
+        assertEquals("pass1234", stored.getPassword(service));
+
+        verify(service).Encrypt("pass1234");
+        verify(service).Decrypt("encrypted_pass");
+
     }
 }
