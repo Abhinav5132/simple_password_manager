@@ -40,6 +40,14 @@ public class EncryptionService {
     }
 
     public String Decrypt(String encypted_password) {
+        if (encypted_password == null){
+            throw new NullPointerException("Password cannot be null");
+        }
+        encypted_password = encypted_password.trim();
+        if (encypted_password.isEmpty() || encypted_password.isBlank()){
+            throw new IllegalArgumentException("Password cannot be empty");
+        }
+
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, key);
