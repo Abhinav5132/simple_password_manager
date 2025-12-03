@@ -48,4 +48,24 @@ public class EncryptionServiceTest {
         assertEquals("pass123", decrypted);
     }
 
+    @Test
+    public void decrpytShouldThrowIfPasswordIsEmptyOrNull(){
+        EncryptionService service = new EncryptionService();
+
+        assertThrows(NullPointerException.class, ()->{
+            service.Decrypt(null);
+        });
+
+        assertThrows(IllegalArgumentException.class, ()->{
+            service.Decrypt("");
+        });
+
+        assertThrows(IllegalArgumentException.class, ()->{
+            service.Decrypt(" ");
+        });
+
+        String encrypted = service.Encrypt("pass123");
+        String decrypted = service.Decrypt(encrypted);
+        assertEquals("pass123", decrypted);
+    }
 }
