@@ -38,6 +38,14 @@ public class EncryptionServiceTest {
         assertNotEquals("pass123 ", service.Encrypt("pass123 "));
     }
 
+    @Test
+    public void decryptShouldDecryptThePassword(){
+        EncryptionService service = new EncryptionService();
+        String encrypted = service.Encrypt("pass123");
+        String decrypted = service.Decrypt(encrypted);
 
+        assertNotNull(decrypted);
+        assertEquals("pass123", decrypted);
+    }
 
 }
