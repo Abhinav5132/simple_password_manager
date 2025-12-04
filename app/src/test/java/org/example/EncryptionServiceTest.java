@@ -68,4 +68,15 @@ public class EncryptionServiceTest {
         String decrypted = service.Decrypt(encrypted);
         assertEquals("pass123", decrypted);
     }
+
+    @Test
+    public void hashShouldHashThePassword(){
+        EncryptionService service = new EncryptionService();
+
+        String result = service.Hash("pass1234");
+
+        assertNotNull(result);
+        assertNotEquals("pass1234", result);
+        assertEquals(64, result.length());
+    }
 }
