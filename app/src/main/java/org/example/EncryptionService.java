@@ -64,6 +64,16 @@ public class EncryptionService {
     }
 
     public String Hash(String password) {
+
+        if (password == null){
+            throw new NullPointerException("Password cannot be null");
+        }
+
+        password = password.trim();
+        if (password.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be empty");
+        }
+
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8)); 
