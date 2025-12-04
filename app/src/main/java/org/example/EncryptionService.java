@@ -1,5 +1,8 @@
 package org.example;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+
 import javax.crypto.SecretKey;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -61,6 +64,24 @@ public class EncryptionService {
     }
 
     public String Hash(String password) {
-        return null;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8)); 
+
+            final StringBuilder hexString = new StringBuilder();
+            for (int i = 0; i < hashBytes.length; i++) {
+                final String hex = Integer.toHexString(0xff & hashBytes[i]);
+                if(hex.length() == 1){
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        }
+        catch(Exception e){
+            throw new RuntimeException("SHA-256 hashing failed", e);
+        }
     }
+
 }
