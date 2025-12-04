@@ -77,6 +77,29 @@ public class EncryptionServiceTest {
 
         assertNotNull(result);
         assertNotEquals("pass1234", result);
+        assertEquals(64, result.length()); // SHA-256 is always 64 bit hex characters 
+    }
+
+    @Test
+    public void hashShouldThrowIfPasswordIsEmptyOrNull(){
+        EncryptionService service = new EncryptionService();
+
+        assertThrows(NullPointerException.class, ()->{
+            service.Hash(null);
+        });
+
+        assertThrows(IllegalArgumentException.class, ()->{
+            service.Hash("");
+        });
+
+        assertThrows(IllegalArgumentException.class, ()->{
+            service.Hash(" ");
+        });
+
+        String result = service.Hash("pass123 ");
+        assertNotNull(result);
+        assertNotEquals("pass1234", result);
         assertEquals(64, result.length());
+        
     }
 }
