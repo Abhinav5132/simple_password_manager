@@ -11,7 +11,7 @@ public class PasswordRepo {
         this.service = service;
     }
 
-    public Entry getEntryByName(String name) {
+    public Entry[] getEntryByName(String name) {
         if(name == null) {
             throw new IllegalArgumentException("Site name cannot be null");
         }
@@ -21,12 +21,18 @@ public class PasswordRepo {
         }
 
         name = name.trim();
+        List<Entry> matches = new ArrayList<>();
         for (Entry entry: entries) {
             if(entry.getName().equals(name)){
-                return entry;
+                matches.add(entry);
             }
         }
-        throw new IllegalArgumentException("No entry with Site name:" + name);
+
+        if(matches.isEmpty()) {
+            throw new IllegalArgumentException("No entry with Site name:" + name);
+        }
+
+        return matches.toArray(new Entry[0]);
     }
 
     public void addEntry(Entry entry) {
