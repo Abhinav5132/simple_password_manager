@@ -73,11 +73,119 @@ public class App {
             User user = service.Login(username, password);
             if (user != null) {
                 System.out.println("Login successful!");
+                userMenuUI(scanner, user);
             } else {
                 System.out.println("Invalid username or password.");
             }
 
+
         } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+
+    private static void userMenuUI(Scanner scanner, User user) {
+        PasswordRepo passwordRepo = user.getPasswordRepo();
+        EncryptionService encryptionService = new EncryptionService();
+
+        while (true) {
+            System.out.println("\n===== USER MENU =====");
+            System.out.println("1. View Password Entries");
+            System.out.println("2. Add Password Entry");
+            System.out.println("3. Get Entry Details");
+            System.out.println("4. Remove Entry");
+            System.out.println("5. Logout");
+            System.out.print("Enter choice: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1":
+                    viewEntriesUI(passwordRepo, encryptionService);
+                    break;
+
+                case "2":
+                    addEntryUI(scanner, passwordRepo);
+                    break;
+
+                case "3":
+                    getEntryDetailsUI(scanner, passwordRepo, encryptionService);
+                    break;
+
+                case "4":
+                    removeEntryUI(scanner, passwordRepo);
+                    break;
+
+                case "5":
+                    System.out.println("Logged out!");
+                    return;
+
+                default:
+                    System.out.println("Invalid option! Try again.");
+            }
+        }
+    }
+
+    private static void viewEntriesUI(PasswordRepo passwordRepo, EncryptionService encryptionService) {
+        //TODO: make this print a list of entries with their names and usernames
+        System.out.println("\n---- Password Entries ----");
+        int count = passwordRepo.count();
+        if (count == 0) {
+            System.out.println("No password entries saved.");
+        } else {
+            System.out.println("Total entries: " + count);
+            System.out.println("Use 'Get Entry Details' to view passwords.");
+        }
+    }
+
+    private static void addEntryUI(Scanner scanner, PasswordRepo passwordRepo) {
+        System.out.println("\n---- Add Password Entry ----");
+
+        System.out.print("Enter site/service name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        try {
+            passwordRepo.createEntry(name, username, password);
+            System.out.println("Password entry saved successfully!");
+        } catch (IllegalArgumentException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+
+    private static void getEntryDetailsUI(Scanner scanner, PasswordRepo passwordRepo, EncryptionService encryptionService) {
+        System.out.println("\n---- Get Entry Details ----");
+
+        System.out.print("Enter site/service name: ");
+        String name = scanner.nextLine();
+
+        try {
+            Entry entry = passwordRepo.getEntryByName(name);
+            System.out.println("\nEntry Details:");
+            System.out.println("Site: " + entry.getName());
+            System.out.println("Username: " + entry.getUsername());
+            System.out.println("Password: " + entry.getPassword(encryptionService));
+        } catch (IllegalArgumentException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+
+    private static void removeEntryUI(Scanner scanner, PasswordRepo passwordRepo) {
+        System.out.println("\n---- Remove Entry ----");
+
+        System.out.print("Enter site/service name: ");
+        String name = scanner.nextLine();
+
+        try {
+            Entry entry = passwordRepo.getEntryByName(name);
+            passwordRepo.removeEntry(entry);
+            System.out.println("Entry removed successfully!");
+        } catch (IllegalArgumentException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
     }
