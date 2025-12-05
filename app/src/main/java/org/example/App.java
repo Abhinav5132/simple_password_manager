@@ -27,7 +27,7 @@ public class App {
                     break;
 
                 case "2":
-                    loginUI(scanner, service);
+                    loginUI(scanner, service, encrypt);
                     break;
 
                 case "3":
@@ -60,7 +60,7 @@ public class App {
         }
     }
 
-    private static void loginUI(Scanner scanner, UserService service) {
+    private static void loginUI(Scanner scanner, UserService service, EncryptionService encryptionService) {
         System.out.println("---- Login ----");
 
         System.out.print("Username: ");
@@ -73,7 +73,7 @@ public class App {
             User user = service.Login(username, password);
             if (user != null) {
                 System.out.println("Login successful!");
-                userMenuUI(scanner, user);
+                userMenuUI(scanner, user, encryptionService);
             } else {
                 System.out.println("Invalid username or password.");
             }
@@ -84,9 +84,8 @@ public class App {
         }
     }
 
-    private static void userMenuUI(Scanner scanner, User user) {
+    private static void userMenuUI(Scanner scanner, User user, EncryptionService encryptionService) {
         PasswordRepo passwordRepo = user.getPasswordRepo();
-        EncryptionService encryptionService = new EncryptionService();
 
         while (true) {
             System.out.println("\n===== USER MENU =====");
@@ -165,11 +164,32 @@ public class App {
         String name = scanner.nextLine();
 
         try {
-            Entry entry = passwordRepo.getEntryByName(name);
-            System.out.println("\nEntry Details:");
-            System.out.println("Site: " + entry.getName());
-            System.out.println("Username: " + entry.getUsername());
-            System.out.println("Password: " + entry.getPassword(encryptionService));
+            Entry[] entries = passwordRepo.getEntryByName(name);
+
+            if (entries == null || entries.length == 0) {
+                System.out.println("No entries found for: " + name);
+                return;
+            }
+
+            System.out.println("\nFound " + entries.length + " entr" 
+                            + (entries.length == 1 ? "y" : "ies")
+                            + " for: " + name);
+
+            for (int i = 0; i < entries.length; i++) {
+                Entry e = entries[i];
+                System.out.println("\n--- Entry #" + (i + 1) + " ---");
+                System.out.println("Site: " + e.getName());
+                System.out.println("Username: " + e.getUsername());
+
+                try {
+                    // decrypt password
+                    String decrypted = e.getPassword(encryptionService);
+                    System.out.println("Password: " + decrypted);
+                } catch (Exception ex) {
+                    System.out.println("Password: <ERROR decrypting>"+ ex);
+                }
+            }
+
         } catch (IllegalArgumentException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
@@ -182,7 +202,8 @@ public class App {
         String name = scanner.nextLine();
 
         try {
-            Entry entry = passwordRepo.getEntryByName(name);
+            Entry[] entries = passwordRepo.getEntryByName(name);
+            Entry entry = entries[0];
             passwordRepo.removeEntry(entry);
             System.out.println("Entry removed successfully!");
         } catch (IllegalArgumentException ex) {

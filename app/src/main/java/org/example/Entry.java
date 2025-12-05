@@ -16,22 +16,10 @@ public class Entry {
     }
 
     public String getUsername() {
-        return null;
+        return this.username;
     }
 
     public String getPassword(EncryptionService service) {
         return service.Decrypt(this.password);
-    }
-
-    public String setName(){
-        return null;
-    } 
-
-    public String setUsername() {
-        return null;
-    }
-
-    public String setPassword() {
-        return null;
     }
 }
