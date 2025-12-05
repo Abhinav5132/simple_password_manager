@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+ 
 import org.junit.Test;
 
 public class PasswordRepoTest {
@@ -160,12 +161,12 @@ public class PasswordRepoTest {
 
         repo.createEntry("Google.com","alicia", "pass1234");
 
-        Entry stored = repo.getEntryByName("Google.com");
+        Entry[] stored = repo.getEntryByName("Google.com");
 
         when(service.Decrypt("encrypted_pass")).thenReturn("pass1234");
 
         assertNotNull(stored);
-        assertEquals("pass1234", stored.getPassword(service));
+        assertEquals("pass1234", stored[0].getPassword(service));
 
         verify(service).Encrypt("pass1234");
         verify(service).Decrypt("encrypted_pass");
@@ -202,6 +203,21 @@ public class PasswordRepoTest {
             repo.getEntryByName(" ");
         });
 
-        Entry entry = repo.getEntryByName("Google.com "); // trailing white space should not throw
+        Entry[] entry = repo.getEntryByName("Google.com "); // trailing white space should not throw
+    }
+
+    @Test
+    public void getEntryShouldReturnMultipleIfEntriesWithSameNamesExist(){
+        EncryptionService service = mock(EncryptionService.class);
+        PasswordRepo repo = new PasswordRepo(service);
+
+        when(service.Encrypt("pass1234")).thenReturn("encrypted_pass");
+        when(service.Encrypt("pass5678")).thenReturn("encrypted_pass2");
+
+        repo.createEntry("Google.com","alicia", "pass1234");
+        repo.createEntry("Google.com","bob", "pass5678");
+
+        Entry[] result = repo.getEntryByName("Google.com");
+        assertEquals(2, result.length);
     }
 }

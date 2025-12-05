@@ -100,6 +100,5 @@ public class EncryptionServiceTest {
         assertNotNull(result);
         assertNotEquals("pass1234", result);
         assertEquals(64, result.length());
-        
     }
 }
